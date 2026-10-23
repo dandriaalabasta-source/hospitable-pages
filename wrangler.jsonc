@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // The Worker's name becomes part of its address: https://<name>.<you>.workers.dev
+  "name": "hospitable-pages",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-15",
+  "observability": { "enabled": true },
+
+  // Cloudflare creates both namespaces on deploy.
+  // LISTINGS: last good copy of the listing data. SITE: the published site and its versions.
+  "kv_namespaces": [{ "binding": "LISTINGS","id": "ebb3ee3a5a3345ea9ef0df2a2ff96d04" }, { "binding": "SITE","id": "f22f988e56dc4d648470e5ac3a20a028" }],
+
+  // Hourly refresh, at minute 0 (UTC).
+  "triggers": { "crons": ["0 * * * *"] },
+
+  "vars": {
+    // Where this Worker's home page sends you before your site is published,
+    // which builder may publish to it, and where the page code comes from.
+    "BUILDER_URL": "https://hospitable-pages.adhityoagam.com/"
+  },
+
+  // Variables added in the Cloudflare dashboard survive redeploys. That is
+  // where PUBLIC_GUIDE_TOPICS and RUNTIME_URL go: they are optional, and the
+  // deploy page would insist on a value if they were listed above.
+  "keep_vars": true
+}
